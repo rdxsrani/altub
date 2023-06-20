@@ -40,7 +40,7 @@ type dataPenjualan struct {
 }
 
 func main() {
-	var x dataPenjualan
+	var data dataPenjualan
 	var pilihan int
 	intro()
 	for true {
@@ -57,9 +57,9 @@ func main() {
 				farewell()
 				os.Exit(1)
 			case 1:
-				menuSparePart(&x)
+				menuSparePart(&data)
 			case 2:
-				menuPelanggan(&x)
+				menuPelanggan(&data)
 			}
 		}
 	}
@@ -148,7 +148,7 @@ func menuSparePart(data *dataPenjualan) {
 				var hasil dataPenjualan = searchSP(*data, pil)
 				if hasil.nSP > 0 {
 					tampilkanSP(hasil)
-				} else if hasil.nSP <= 0 && pil != 6 {
+				} else {
 					fmt.Println("===Data tidak ditemukan===")
 				}
 			case 5:
@@ -186,11 +186,30 @@ func menuPelanggan(data *dataPenjualan) {
 				fmt.Println("1. Nama Pelanggan")
 				fmt.Println("2. Waktu Transaksi")
 				fmt.Println("3. Jumlah Transaksi")
-				var choose int
+				var choose, urutan int
 				fmt.Print("Masukkan Pilihan: ")
 				fmt.Scan(&choose)
-				if choose == 1 || choose == 2 || choose == 3 {
-					sortingP(data, choose)
+				if choose == 1 {
+					fmt.Println("\nUrutkan secara:")
+					fmt.Println("1. Ascending")
+					fmt.Println("2. Descending")
+					fmt.Print("Masukkan Pilihan: ")
+					fmt.Scan(&urutan)
+					sortingP(data, urutan, choose)
+				} else if choose == 2 {
+					fmt.Println("Urutkan secara:")
+					fmt.Println("1. Terlama")
+					fmt.Println("2. Terbaru")
+					fmt.Print("Masukkan Pilihan: ")
+					fmt.Scan(&urutan)
+					sortingP(data, urutan, choose)
+				} else if choose == 3 {
+					fmt.Println("Urutkan secara:")
+					fmt.Println("1. Ascending")
+					fmt.Println("2. Descending")
+					fmt.Print("Masukkan Pilihan: ")
+					fmt.Scan(&urutan)
+					sortingP(data, urutan, choose)
 				}
 				tampilkanP(*data)
 			case 3:
@@ -565,8 +584,8 @@ func entryPelanggan(data *dataPenjualan) {
 	}
 }
 
-func sortingP(data *dataPenjualan, flag int) {
-	var pass, i, urutan int
+func sortingP(data *dataPenjualan, urutan, flag int) {
+	var pass, i int
 	var temp pelanggan
 	for pass = 1; pass < data.nCust; pass++ {
 		i = pass
@@ -575,11 +594,6 @@ func sortingP(data *dataPenjualan, flag int) {
 		case 1:
 			// Berdasarkan Nama
 			// 1 Ascending dan 2 Descending
-			fmt.Println("\nUrutkan secara:")
-			fmt.Println("1. Ascending")
-			fmt.Println("2. Descending")
-			fmt.Print("Masukkan Pilihan: ")
-			fmt.Scan(&urutan)
 			if urutan == 1 {
 				for i > 0 && temp.nama < data.cust[i-1].nama {
 					data.cust[i] = data.cust[i-1]
@@ -594,11 +608,6 @@ func sortingP(data *dataPenjualan, flag int) {
 		case 2:
 			//Mengurutkan Waktu Transaksi
 			// 1 Terlama dan 2 Terbaru
-			fmt.Println("Urutkan secara:")
-			fmt.Println("1. Terlama")
-			fmt.Println("2. Terbaru")
-			fmt.Print("Masukkan Pilihan: ")
-			fmt.Scan(&urutan)
 			if urutan == 1 {
 				for i > 0 && temp.tanggal <= data.cust[i-1].tanggal && temp.bulan <= data.cust[i-1].bulan && temp.tahun <= data.cust[i-1].tahun {
 					data.cust[i] = data.cust[i-1]
@@ -613,11 +622,6 @@ func sortingP(data *dataPenjualan, flag int) {
 		case 3:
 			// Berdasarkan Belanjaan
 			// 1 Ascending dan 2 Descending
-			fmt.Println("Urutkan secara:")
-			fmt.Println("1. Ascending")
-			fmt.Println("2. Descending")
-			fmt.Print("Masukkan Pilihan: ")
-			fmt.Scan(&urutan)
 			if urutan == 1 {
 				for i > 0 && temp.tarifService < data.cust[i-1].tarifService {
 					data.cust[i] = data.cust[i-1]
